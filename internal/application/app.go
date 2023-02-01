@@ -107,9 +107,15 @@ func List(c *cli.Context) error {
 	var i, n int
 	fmt.Sscanf(c.String("portion"), "%d/%d", &i, &n)
 
+	packages, err := pkg.List()
+	if err != nil {
+		return err
+	}
+
 	s := pkg.Splitter{
-		Timings: ts,
-		Parts:   n,
+		Timings:  ts,
+		Packages: packages,
+		Parts:    n,
 	}
 
 	fmt.Fprintln(os.Stdout, strings.Join(s.List(i-1), "\n"))
